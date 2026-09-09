@@ -1,11 +1,8 @@
 package com.boardgame.boardgameSorter.controller;
 
 import com.boardgame.boardgameSorter.entity.Boardgame;
-import com.boardgame.boardgameSorter.repository.BoardgameRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.boardgame.boardgameSorter.service.BoardgameService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -13,22 +10,20 @@ import java.util.List;
 @RequestMapping("/api/boardgames")
 public class BoardgameController {
 
-    private final BoardgameRepository boardgameRepository;
+    private final BoardgameService boardgameService;
 
-    public BoardgameController(BoardgameRepository repository) {
-        this.boardgameRepository = repository;
-
+    public BoardgameController(BoardgameService boardgameService) {
+        this.boardgameService = boardgameService;
     }
 
     @GetMapping
     public List<Boardgame> getAllBoardgames() {
-        return boardgameRepository.findAll();
+        return boardgameService.getAllBoardgames();
     }
 
     @GetMapping("/{id}")
     public Boardgame getBoardgame(@PathVariable Integer id) {
-        return boardgameRepository.findById(id)
-                .orElseThrow();
+        return boardgameService.getBoardgame(id);
     }
-
 }
+
