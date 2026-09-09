@@ -1,0 +1,83 @@
+/* ================================
+   Base
+   ================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    color: #222;
+}
+
+
+/* ================================
+   Header
+   ================================ */
+
+header {
+    padding: 20px;
+    background: #222;
+    color: white;
+}
+
+header h1 {
+    margin: 0;
+}
+
+
+/* ================================
+   Main
+   ================================ */
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+
+/* ================================
+   Boardgame List
+   ================================ */
+
+#boardgames {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+
+/* ================================
+   Boardgame Card
+   ================================ */
+
+.boardgame-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.boardgame-card h2 {
+    margin-top: 0;
+}
+
+
+/* ================================
+   Responsive
+   ================================ */
+
+@media (max-width: 600px) {
+
+    main {
+        padding: 20px 10px;
+    }
+
+    #boardgames {
+        grid-template-columns: 1fr;
+    }
+}
