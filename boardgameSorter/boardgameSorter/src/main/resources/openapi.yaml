@@ -1,0 +1,273 @@
+openapi: 3.0.3
+
+info:
+  title: BoardgameSorter API
+  description: REST-API zur Verwaltung und Bewertung von Brettspielen
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+
+tags:
+  - name: Brettspiele
+    description: Abrufen und Verwalten von Brettspielen
+  - name: Ranglisten
+    description: Importieren und Verarbeiten von Ranglisten
+
+paths:
+
+  /api/boardgames:
+    get:
+      tags:
+        - Brettspiele
+      summary: Alle Brettspiele abrufen
+      operationId: getAllBoardgames
+      responses:
+        '200':
+          description: Liste aller Brettspiele
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Boardgame'
+
+  /api/boardgames/{id}:
+    get:
+      tags:
+        - Brettspiele
+      summary: Ein Brettspiel abrufen
+      operationId: getBoardgame
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID des Brettspiels
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Brettspiel gefunden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Boardgame'
+
+        '404':
+          description: Brettspiel nicht gefunden
+
+  /api/rankings/upload:
+    post:
+      tags:
+        - Ranglisten
+      summary: Eine Rangliste importieren
+      operationId: uploadRanking
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: CSV-Datei mit Rang und Spielname
+      responses:
+        '200':
+          description: Rangliste erfolgreich importiert
+
+        '400':
+          description: Ungültige CSV-Datei
+
+components:
+
+  schemas:
+
+    Boardgame:
+      type: object
+      properties:
+
+        id:
+          type: integer
+          format: int32
+          description: Eindeutige ID des Brettspiels
+
+        gameName:
+          type: string
+          description: Name des Brettspiels
+
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Author'
+          description: Autoren des Brettspiels
+
+        playerCount:
+          type: array
+          items:
+            type: integer
+          description: Unterstützte Spielerzahlen
+
+        optimalPlayerCount:
+          type: integer
+          description: Optimale Spielerzahl
+
+        yearOfRelease:
+          type: integer
+          description: Erscheinungsjahr
+
+
+        recentRank:
+          type: integer
+          description: Aktueller Rang in der importierten Rangliste
+
+        myRating:
+          type: integer
+          description: Eigene Bewertung
+
+        ratingCount:
+          type: integer
+          description: Anzahl der Bewertungen
+
+        bggRating:
+          type: number
+          format: double
+          description: Bewertung auf BoardGameGeek
+
+        relativeRating:
+          type: number
+          format: double
+          description: Berechnete relative Bewertung
+
+        changeRelativeRating:
+          type: number
+          format: double
+          description: Änderung der relativen Bewertung
+
+
+        themes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Theme'
+          description: Themen des Brettspiels
+
+        mechanisms:
+          type: array
+          items:
+            $ref: '#/components/schemas/Mechanism'
+          description: Mechanismen des Brettspiels
+
+
+        complexity:
+          type: integer
+          description: Komplexität des Brettspiels
+
+        interactivity:
+          type: integer
+          description: Interaktivität des Brettspiels
+
+        competitive:
+          type: boolean
+          description: Gibt an, ob das Spiel kompetitiv ist
+
+        cooperative:
+          type: boolean
+          description: Gibt an, ob das Spiel kooperativ ist
+
+        teamBased:
+          type: boolean
+          description: Gibt an, ob das Spiel auf Teams basiert
+
+        turnOrder:
+          $ref: '#/components/schemas/TurnOrder'
+
+        gameEndConditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/GameEndCondition'
+          description: Bedingungen für das Spielende
+
+        expectedDurationAtOptimalPlayerCount:
+          type: integer
+          description: Erwartete Spieldauer bei optimaler Spielerzahl
+
+
+    Author:
+      type: object
+      properties:
+
+        id:
+          type: integer
+          format: int32
+          description: Eindeutige ID des Autors
+
+        authorName:
+          type: string
+          description: Name des Autors
+
+
+    Mechanism:
+      type: object
+      properties:
+
+        id:
+          type: integer
+          format: int32
+          description: Eindeutige ID des Mechanismus
+
+        mechanismName:
+          type: string
+          description: Name des Mechanismus
+
+        mechanismDescription:
+          type: string
+          description: Beschreibung des Mechanismus
+
+
+    Theme:
+      type: object
+      properties:
+
+        id:
+          type: integer
+          format: int32
+          description: Eindeutige ID des Themas
+
+        themeName:
+          type: string
+          description: Name des Themas
+
+
+    TurnOrder:
+      type: string
+      enum:
+        - CLOCKWISE
+        - SIMULTANEOUS
+        - PROGRESSIVE
+        - PASS_ORDER
+        - VARIABLE
+        - ROLE_ORDER
+        - TRICK_TAKER
+        - STAT_BASED
+        - CLAIM
+        - INITIATIVE
+        - AUCTION
+        - RANDOM
+        - CHIT_PULL
+        - FIXED
+        - SOLO
+
+
+    GameEndCondition:
+      type: string
+      enum:
+        - FIXED_TURNS
+        - RUNNING_OUT
+        - COMPLETION
+        - RACE
+        - CONDITION
+        - PLAYER_ELIMINATION
