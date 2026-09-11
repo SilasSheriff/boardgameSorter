@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { KolTableStateless } from "@public-ui/react-v19";
+import { KolLink } from "@public-ui/react-v19";
 
 import type { Boardgame } from "../models/Boardgame";
 import { fetchBoardgames } from "../api/boardgameApi";
@@ -28,43 +28,76 @@ function BoardgameList() {
         return <p>{error}</p>;
     }
 
-    const headerCells = {
-    horizontal: [[
-        { key: "recentRank", label: "Rang" },
-        { key: "gameName", label: "Spiel" },
-        { key: "authors", label: "Autor" },
-        { key: "bggRating", label: "BGG" },
-        { key: "myRating", label: "Meine Bewertung" },
-        { key: "playerCount", label: "Spieler" },
-        { key: "relativeRating", label: "Relative Bewertung" },
-        { key: "changeRelativeRating", label: "Änderung" },
-    ]]
-};
-
-const data = boardgames.map((game) => ({
-    recentRank: game.recentRank ?? "-",
-    gameName: game.gameName,
-    authors: game.authors
-        .map((author) => author.authorName)
-        .join(", "),
-    bggRating: game.bggRating?.toFixed(1) ?? "-",
-    myRating: game.myRating ?? "-",
-    playerCount: game.playerCount.length > 0
-        ? game.playerCount.join(", ")
-        : "-",
-    relativeRating: game.relativeRating?.toFixed(2) ?? "-",
-    changeRelativeRating: game.changeRelativeRating?.toFixed(2) ?? "-",
-}));
-
     return (
         <main>
             <h1>Meine Brettspiele</h1>
 
-            <KolTableStateless
-                _label="Brettspiele"
-                _headerCells={headerCells}
-                _data={data}
-            />
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rang</th>
+                        <th>Spiel</th>
+                        <th>Autor</th>
+                        <th>BGG</th>
+                        <th>Meine Bewertung</th>
+                        <th>Spieler</th>
+                        <th>Relative Bewertung</th>
+                        <th>Änderung</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {boardgames.map((game) => (
+                        <tr key={game.id}>
+                            <td>
+                                {game.recentRank ?? "-"}
+                            </td>
+
+                            <td>
+                                {game.gameName}
+                            </td>
+
+                            <td>
+                                {game.authors.length > 0
+                                    ? game.authors
+                                        .map((author) => author.authorName)
+                                        .join(", ")
+                                    : "-"}
+                            </td>
+
+                            <td>
+                                {game.bggRating?.toFixed(1) ?? "-"}
+                            </td>
+
+                            <td>
+                                {game.myRating ?? "-"}
+                            </td>
+
+                            <td>
+                                {game.playerCount.length > 0
+                                    ? game.playerCount.join(", ")
+                                    : "-"}
+                            </td>
+
+                            <td>
+                                {game.relativeRating?.toFixed(2) ?? "-"}
+                            </td>
+
+                            <td>
+                                {game.changeRelativeRating?.toFixed(2) ?? "-"}
+                            </td>
+
+                            <td>
+                                <KolLink
+                                    _href={`/boardgames/${game.id}`}
+                                    _label="Details"
+                                />
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </main>
     );
 }
