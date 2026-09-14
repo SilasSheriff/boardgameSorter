@@ -3,6 +3,17 @@ export interface Author {
     authorName: string;
 }
 
+export interface Theme {
+    id: number;
+    themeName: string;
+}
+
+export interface Mechanism {
+    id: number;
+    mechanismName: string;
+    mechanismDescription: string | null;
+}
+
 export interface Boardgame {
     id: number;
     gameName: string;
@@ -19,8 +30,8 @@ export interface Boardgame {
     relativeRating: number | null;
     changeRelativeRating: number | null;
 
-    themes: unknown[];
-    mechanisms: unknown[];
+    themes: Theme[];
+    mechanisms: Mechanism[];
 
     complexity: number | null;
     interactivity: number | null;
