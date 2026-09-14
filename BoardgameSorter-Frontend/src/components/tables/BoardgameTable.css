@@ -70,3 +70,25 @@
         min-width: 1100px;
     }
 }
+
+.boardgame-table th[onClick] {
+    cursor: pointer;
+}
+
+.boardgame-table th[onClick]:hover {
+    background: #354f52;
+}
+
+.optimal-player-count {
+    color: #52796f;
+    font-size: 0.9em;
+    font-weight: 600;
+}
+
+.boardgame-table th.sortable {
+    cursor: pointer;
+}
+
+.boardgame-table th.sortable:hover {
+    background: #354f52;
+}
