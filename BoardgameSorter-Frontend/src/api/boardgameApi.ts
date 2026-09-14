@@ -1,4 +1,3 @@
-
 import type { Boardgame } from "../models/Boardgame";
 
 const API_URL = "/api/boardgames";

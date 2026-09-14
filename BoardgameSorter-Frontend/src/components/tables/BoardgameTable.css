@@ -1,0 +1,72 @@
+.boardgame-table-container {
+    max-width: 1500px;
+    margin: 40px auto;
+    padding: 0 24px;
+}
+
+.boardgame-table-container h1 {
+    margin-bottom: 24px;
+    font-size: 2rem;
+}
+
+.boardgame-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.boardgame-table thead {
+    background: #2f3e46;
+    color: white;
+}
+
+.boardgame-table th {
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.boardgame-table td {
+    padding: 13px 16px;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: middle;
+}
+
+.boardgame-table tbody tr:nth-child(even) {
+    background: #f8fafb;
+}
+
+.boardgame-table tbody tr:hover {
+    background: #eef3f5;
+}
+
+.boardgame-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Zahlenwerte etwas kompakter darstellen */
+.boardgame-table th:first-child,
+.boardgame-table td:first-child {
+    text-align: center;
+}
+
+/* Detail-Link */
+.boardgame-table a {
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* Kleine Bildschirme */
+@media (max-width: 1000px) {
+    .boardgame-table-container {
+        overflow-x: auto;
+    }
+
+    .boardgame-table {
+        min-width: 1100px;
+    }
+}

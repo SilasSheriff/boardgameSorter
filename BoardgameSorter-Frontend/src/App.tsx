@@ -1,21 +1,23 @@
-
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import BoardgameList from "./components/BoardgameList";
+
+import Navigation from "./components/Navigation";
+import Home from "./components/Home";
+import BoardgameTable from "./components/tables/BoardgameTable";
 import BoardgameCard from "./components/BoardgameCard";
 
 function App() {
     return (
         <BrowserRouter>
-            <main>
-                <Routes>
-                    <Route path="/" element={<BoardgameList />} />
-                    <Route path="/boardgames/:id" element={<BoardgameCard />} />
-                </Routes>
-            </main>
+            <Navigation />
+
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/boardgames" element={<BoardgameTable />} />
+                <Route path="/boardgames/:id" element={<BoardgameCard />} />
+            </Routes>
         </BrowserRouter>
     );
 }
 
 export default App;
-
