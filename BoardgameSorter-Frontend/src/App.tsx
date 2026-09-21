@@ -1,10 +1,10 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Navigation from "./components/Navigation";
+import Navigation from "./components/Navigation/Navigation";
 import Home from "./components/Home";
 import BoardgameTable from "./components/tables/BoardgameTable";
-import BoardgameCard from "./components/BoardgameCard";
+import BoardgameCard from "./components/BoardgameCard/BoardgameCard";
 
 function App() {
     return (
