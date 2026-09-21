@@ -5,10 +5,11 @@ import { fetchBoardgame } from "../../api/boardgameApi";
 import BoardgameInfo from "./BoardgameInfo";
 import BoardgameRating from "./BoardgameRating";
 import BoardgameProperties from "./BoardgameProperties";
+import BoardgameEditForm from "./BoardgameEditForm";
 
 export default function BoardgameCard() {
     const { id } = useParams<{ id: string }>();
-
+    const [isEditing, setIsEditing] = useState(false);
     const [boardgame, setBoardgame] = useState<Boardgame | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -43,21 +44,29 @@ export default function BoardgameCard() {
     }
 
     return (
-        <div className="boardgame-detail">
+    <div className="boardgame-detail">
 
-            {/* Grundinformationen */}
-            {/* Spieler und Spieldauer */}
-            <BoardgameInfo boardgame={boardgame} />
+        {!isEditing ? (
+            <>
+                <BoardgameInfo boardgame={boardgame} />
+                <BoardgameRating boardgame={boardgame} />
+                <BoardgameProperties boardgame={boardgame} />
 
-            {/* Bewertungen und Rang */}
-            <BoardgameRating boardgame={boardgame} />
+                <button onClick={() => setIsEditing(true)}>
+                    Bearbeiten
+                </button>
+            </>
+        ) : (
+            <BoardgameEditForm
+                boardgame={boardgame}
+                onSave={(updatedBoardgame) => {
+                    setBoardgame(updatedBoardgame);
+                    setIsEditing(false);
+                }}
+                onCancel={() => setIsEditing(false)}
+            />
+        )}
 
-            {/* Spielmechanismen */}
-            {/* Themen */}
-            {/* Eigenschaften */}
-            {/* Spielablauf */}
-            <BoardgameProperties boardgame={boardgame} />
-
-        </div>
-    );
+    </div>
+);
 }

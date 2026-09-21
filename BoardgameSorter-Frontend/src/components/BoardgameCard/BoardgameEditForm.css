@@ -1,0 +1,67 @@
+.boardgame-edit-form {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.boardgame-edit-form h1 {
+    margin-bottom: 2rem;
+}
+
+.boardgame-edit-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.2rem;
+}
+
+.boardgame-edit-field label {
+    font-weight: 600;
+}
+
+.boardgame-edit-field input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: white;
+}
+
+.boardgame-edit-field input:focus {
+    outline: none;
+    border-color: #0066cc;
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.15);
+}
+
+.boardgame-edit-actions {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 2rem;
+}
+
+.boardgame-edit-actions button {
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.boardgame-edit-save {
+    background-color: #0066cc;
+    color: white;
+}
+
+.boardgame-edit-save:hover {
+    background-color: #0052a3;
+}
+
+.boardgame-edit-cancel {
+    background-color: #e5e5e5;
+    color: #222;
+}
+
+.boardgame-edit-cancel:hover {
+    background-color: #d5d5d5;
+}
