@@ -16,6 +16,8 @@ public class Boardgame {
      @GeneratedValue(strategy = GenerationType.IDENTITY)
      private Integer id;
 
+     private Integer bggId;
+
      @Nationalized
      @Column(unique = true)
      private String gameName;
