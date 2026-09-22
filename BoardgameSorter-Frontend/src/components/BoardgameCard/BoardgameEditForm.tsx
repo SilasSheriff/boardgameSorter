@@ -1,10 +1,12 @@
 import { useState, type FormEvent } from "react";
 import type { Boardgame } from "../../models/Boardgame";
+import type { BoardgameUpdateRequest } from "../../api/boardgameApi";
+import MechanismSelector from "./MechanismSelector";
 import "./BoardgameEditForm.css";
 
 interface BoardgameEditFormProps {
     boardgame: Boardgame;
-    onSave: (updatedBoardgame: Boardgame) => void;
+    onSave: (update: BoardgameUpdateRequest) => void;
     onCancel: () => void;
 }
 
@@ -14,77 +16,107 @@ export default function BoardgameEditForm({
     onCancel
 }: BoardgameEditFormProps) {
 
-    const [gameName, setGameName] = useState(boardgame.gameName);
-
-    const [optimalPlayerCount, setOptimalPlayerCount] = useState(
-        boardgame.optimalPlayerCount ?? ""
+    const [gameName, setGameName] = useState(
+        boardgame.gameName
     );
 
-    const [yearOfRelease, setYearOfRelease] = useState(
-        boardgame.yearOfRelease ?? ""
-    );
+    const [optimalPlayerCount, setOptimalPlayerCount] =
+        useState(
+            boardgame.optimalPlayerCount ?? ""
+        );
 
-    const [myRating, setMyRating] = useState(
-        boardgame.myRating ?? ""
-    );
+    const [yearOfRelease, setYearOfRelease] =
+        useState(
+            boardgame.yearOfRelease ?? ""
+        );
 
-    const [bggRating, setBggRating] = useState(
-        boardgame.bggRating ?? ""
-    );
+    const [myRating, setMyRating] =
+        useState(
+            boardgame.myRating ?? ""
+        );
 
-    const [complexity, setComplexity] = useState(
-        boardgame.complexity ?? ""
-    );
+    const [bggRating, setBggRating] =
+        useState(
+            boardgame.bggRating ?? ""
+        );
 
-    const [interactivity, setInteractivity] = useState(
-        boardgame.interactivity ?? ""
-    );
+    const [complexity, setComplexity] =
+        useState(
+            boardgame.complexity ?? ""
+        );
+
+    const [interactivity, setInteractivity] =
+        useState(
+            boardgame.interactivity ?? ""
+        );
+
+    const [selectedMechanismIds, setSelectedMechanismIds] =
+        useState<Set<number>>(
+            new Set(
+                boardgame.mechanisms.map(
+                    mechanism => mechanism.id
+                )
+            )
+        );
 
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
 
-        const updatedBoardgame: Boardgame = {
-            ...boardgame,
+        const update: BoardgameUpdateRequest = {
             gameName,
+
             optimalPlayerCount:
                 optimalPlayerCount === ""
                     ? null
                     : Number(optimalPlayerCount),
+
             yearOfRelease:
                 yearOfRelease === ""
                     ? null
                     : Number(yearOfRelease),
+
             myRating:
                 myRating === ""
                     ? null
                     : Number(myRating),
+
             bggRating:
                 bggRating === ""
                     ? null
                     : Number(bggRating),
+
             complexity:
                 complexity === ""
                     ? null
                     : Number(complexity),
+
             interactivity:
                 interactivity === ""
                     ? null
-                    : Number(interactivity)
+                    : Number(interactivity),
+
+            mechanismIds:
+                Array.from(selectedMechanismIds)
         };
 
-        onSave(updatedBoardgame);
+        onSave(update);
     };
 
     return (
-        <form className="boardgame-edit-form" onSubmit={handleSubmit}>
+        <form
+            className="boardgame-edit-form"
+            onSubmit={handleSubmit}
+        >
+            <h1>Brettspiel bearbeiten</h1>
 
             <div className="boardgame-edit-field">
                 <label>
                     Spielname
+
                     <input
                         type="text"
                         value={gameName}
-                        onChange={(event) =>
+                        onChange={event =>
                             setGameName(event.target.value)
                         }
                     />
@@ -94,11 +126,14 @@ export default function BoardgameEditForm({
             <div className="boardgame-edit-field">
                 <label>
                     Optimale Spielerzahl
+
                     <input
                         type="number"
                         value={optimalPlayerCount}
-                        onChange={(event) =>
-                            setOptimalPlayerCount(event.target.value)
+                        onChange={event =>
+                            setOptimalPlayerCount(
+                                event.target.value
+                            )
                         }
                     />
                 </label>
@@ -107,11 +142,14 @@ export default function BoardgameEditForm({
             <div className="boardgame-edit-field">
                 <label>
                     Erscheinungsjahr
+
                     <input
                         type="number"
                         value={yearOfRelease}
-                        onChange={(event) =>
-                            setYearOfRelease(event.target.value)
+                        onChange={event =>
+                            setYearOfRelease(
+                                event.target.value
+                            )
                         }
                     />
                 </label>
@@ -120,11 +158,14 @@ export default function BoardgameEditForm({
             <div className="boardgame-edit-field">
                 <label>
                     Meine Bewertung
+
                     <input
                         type="number"
                         value={myRating}
-                        onChange={(event) =>
-                            setMyRating(event.target.value)
+                        onChange={event =>
+                            setMyRating(
+                                event.target.value
+                            )
                         }
                     />
                 </label>
@@ -133,12 +174,15 @@ export default function BoardgameEditForm({
             <div className="boardgame-edit-field">
                 <label>
                     BGG-Bewertung
+
                     <input
                         type="number"
                         step="0.1"
                         value={bggRating}
-                        onChange={(event) =>
-                            setBggRating(event.target.value)
+                        onChange={event =>
+                            setBggRating(
+                                event.target.value
+                            )
                         }
                     />
                 </label>
@@ -147,11 +191,14 @@ export default function BoardgameEditForm({
             <div className="boardgame-edit-field">
                 <label>
                     Komplexität
+
                     <input
                         type="number"
                         value={complexity}
-                        onChange={(event) =>
-                            setComplexity(event.target.value)
+                        onChange={event =>
+                            setComplexity(
+                                event.target.value
+                            )
                         }
                     />
                 </label>
@@ -160,32 +207,44 @@ export default function BoardgameEditForm({
             <div className="boardgame-edit-field">
                 <label>
                     Interaktivität
+
                     <input
                         type="number"
                         value={interactivity}
-                        onChange={(event) =>
-                            setInteractivity(event.target.value)
+                        onChange={event =>
+                            setInteractivity(
+                                event.target.value
+                            )
                         }
                     />
                 </label>
             </div>
-                <div className="boardgame-edit-actions">
-    <button
-        className="boardgame-edit-save"
-        type="submit"
-    >
-        Speichern
-    </button>
 
-    <button
-        className="boardgame-edit-cancel"
-        type="button"
-        onClick={onCancel}
-    >
-        Abbrechen
-    </button>
-</div>
+            <MechanismSelector
+                selectedMechanismIds={
+                    selectedMechanismIds
+                }
+                onSelectionChange={
+                    setSelectedMechanismIds
+                }
+            />
 
+            <div className="boardgame-edit-actions">
+                <button
+                    className="boardgame-edit-save"
+                    type="submit"
+                >
+                    Speichern
+                </button>
+
+                <button
+                    className="boardgame-edit-cancel"
+                    type="button"
+                    onClick={onCancel}
+                >
+                    Abbrechen
+                </button>
+            </div>
         </form>
     );
 }

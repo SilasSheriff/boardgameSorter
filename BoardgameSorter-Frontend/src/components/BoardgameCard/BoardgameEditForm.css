@@ -8,17 +8,18 @@
 }
 
 .boardgame-edit-field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
     margin-bottom: 1.2rem;
 }
 
-.boardgame-edit-field label {
+.boardgame-edit-field > label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
     font-weight: 600;
 }
 
-.boardgame-edit-field input {
+.boardgame-edit-field input[type="text"],
+.boardgame-edit-field input[type="number"] {
     width: 100%;
     box-sizing: border-box;
     padding: 0.7rem 0.8rem;
@@ -34,16 +35,68 @@
     box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.15);
 }
 
+
+/* Mechanismen */
+
+.mechanism-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+
+    max-height: 350px;
+    overflow-y: auto;
+
+    padding: 0.8rem;
+    margin-top: 0.4rem;
+
+    border: 1px solid #ccc;
+    border-radius: 6px;
+
+    background-color: white;
+}
+
+.mechanism-option {
+    display: flex;
+    flex-direction: row !important;
+    align-items: center;
+
+    gap: 0.5rem;
+    padding: 0.4rem 0.5rem;
+
+    font-weight: normal !important;
+
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.mechanism-option:hover {
+    background-color: #f2f2f2;
+}
+
+.mechanism-option input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+
+/* Buttons */
+
 .boardgame-edit-actions {
     display: flex;
     gap: 0.8rem;
+
     margin-top: 2rem;
 }
 
 .boardgame-edit-actions button {
     padding: 0.7rem 1.2rem;
+
     border: none;
     border-radius: 6px;
+
     font-size: 1rem;
     cursor: pointer;
 }

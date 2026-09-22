@@ -73,7 +73,7 @@ public class BoardgameController {
                     description = "Brettspiel nicht gefunden"
             )
     })
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public Boardgame updateBoardgame(
             @Parameter(
                     description = "ID des Brettspiels",
