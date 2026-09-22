@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { Boardgame } from "../../models/Boardgame";
-import {
-    fetchBoardgame,
-    patchBoardgame,
-    type BoardgameUpdateRequest
-} from "../../api/boardgameApi";
+import {fetchBoardgame, patchBoardgame, type BoardgameUpdateRequest} from "../../api/boardgameApi";
 import BoardgameInfo from "./BoardgameInfo";
 import BoardgameRating from "./BoardgameRating";
 import BoardgameProperties from "./BoardgameProperties";
 import BoardgameEditForm from "./BoardgameEditForm";
+import "./BoardgameCard.css";
 
 export default function BoardgameCard() {
 
@@ -124,11 +121,7 @@ export default function BoardgameCard() {
                         boardgame={boardgame}
                     />
 
-                    <button
-                        onClick={() =>
-                            setIsEditing(true)
-                        }
-                    >
+                    <button className="boardgame-edit-button" onClick={() => setIsEditing(true)}>
                         Bearbeiten
                     </button>
                 </>

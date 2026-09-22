@@ -1,0 +1,34 @@
+.entity-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+    max-height: 350px;
+    overflow-y: auto;
+    padding: 0.8rem;
+    margin-top: 0.4rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: white;
+}
+
+.entity-option {
+    display: flex;
+    flex-direction: row !important;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.5rem;
+    font-weight: normal !important;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.entity-option:hover {
+    background-color: #f2f2f2;
+}
+
+.entity-option input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    cursor: pointer;
+}

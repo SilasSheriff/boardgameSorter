@@ -1,7 +1,10 @@
-import { useState, type FormEvent } from "react";
-import type { Boardgame } from "../../models/Boardgame";
-import type { BoardgameUpdateRequest } from "../../api/boardgameApi";
-import MechanismSelector from "./MechanismSelector";
+import { useEffect, useState} from "react";
+import type { Boardgame, Mechanism } from "../../models/Boardgame";
+import {
+    fetchMechanisms,
+    type BoardgameUpdateRequest
+} from "../../api/boardgameApi";
+import EntitySelector from "../EntitySelector/EntitySelector";
 import "./BoardgameEditForm.css";
 
 interface BoardgameEditFormProps {
@@ -19,6 +22,9 @@ export default function BoardgameEditForm({
     const [gameName, setGameName] = useState(
         boardgame.gameName
     );
+
+    const [mechanisms, setMechanisms] =
+        useState<Mechanism[]>([]);
 
     const [optimalPlayerCount, setOptimalPlayerCount] =
         useState(
@@ -50,6 +56,15 @@ export default function BoardgameEditForm({
             boardgame.interactivity ?? ""
         );
 
+        
+    const [selectedPlayerCounts, setSelectedPlayerCounts] =
+    useState<Set<number>>(
+        new Set(boardgame.playerCount)
+    );
+
+    const [newPlayerCount, setNewPlayerCount] =
+        useState("");
+
     const [selectedMechanismIds, setSelectedMechanismIds] =
         useState<Set<number>>(
             new Set(
@@ -59,11 +74,25 @@ export default function BoardgameEditForm({
             )
         );
 
-    const handleSubmit = (event: FormEvent) => {
-        event.preventDefault();
+    useEffect(() => {
+        fetchMechanisms()
+            .then(setMechanisms)
+            .catch(error => {
+                console.error(
+                    "Mechanismen konnten nicht geladen werden:",
+                    error
+                );
+            });
+    }, []);
+
+    const handleSubmit = () => {
+       
 
         const update: BoardgameUpdateRequest = {
             gameName,
+
+            playerCount:
+                Array.from(selectedPlayerCounts),
 
             optimalPlayerCount:
                 optimalPlayerCount === ""
@@ -122,6 +151,83 @@ export default function BoardgameEditForm({
                     />
                 </label>
             </div>
+
+    
+    <div className="boardgame-edit-field">
+        <label>
+            Spielerzahl
+        </label>
+
+        <div className="player-count-list">
+            {Array.from(selectedPlayerCounts)
+                .sort((a, b) => a - b)
+                .map(playerCount => (
+                    <label
+                        key={playerCount}
+                        className="player-count-option"
+                    >
+                        <input
+                            type="checkbox"
+                            checked={true}
+                            onChange={() => {
+                                const newPlayerCounts =
+                                    new Set(selectedPlayerCounts);
+
+                                newPlayerCounts.delete(
+                                    playerCount
+                                );
+
+                                setSelectedPlayerCounts(
+                                    newPlayerCounts
+                                );
+                            }}
+                        />
+
+                        <span>{playerCount}</span>
+                    </label>
+                ))}
+        </div>
+
+            <div className="player-count-add">
+                <input
+                    type="number"
+                    min="1"
+                    value={newPlayerCount}
+                    onChange={event =>
+                        setNewPlayerCount(
+                            event.target.value
+                        )
+                    }
+                    placeholder="Weitere Spielerzahl"
+                />
+
+                <button
+                    type="button"
+                    onClick={() => {
+                        const playerCount =
+                            Number(newPlayerCount);
+
+                        if (playerCount < 1) {
+                            return;
+                        }
+
+                        const newPlayerCounts =
+                            new Set(selectedPlayerCounts);
+
+                        newPlayerCounts.add(playerCount);
+
+                        setSelectedPlayerCounts(
+                            newPlayerCounts
+                        );
+
+                        setNewPlayerCount("");
+                    }}
+                >
+                    +
+                </button>
+            </div>
+        </div>
+
 
             <div className="boardgame-edit-field">
                 <label>
@@ -220,13 +326,13 @@ export default function BoardgameEditForm({
                 </label>
             </div>
 
-            <MechanismSelector
-                selectedMechanismIds={
-                    selectedMechanismIds
-                }
-                onSelectionChange={
-                    setSelectedMechanismIds
-                }
+            <EntitySelector
+                label="Spielmechanismen"
+                entities={mechanisms}
+                selectedIds={selectedMechanismIds}
+                getId={mechanism => mechanism.id}
+                getLabel={mechanism => mechanism.mechanismName}
+                onSelectionChange={setSelectedMechanismIds}
             />
 
             <div className="boardgame-edit-actions">
